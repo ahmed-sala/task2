@@ -8,6 +8,12 @@ class CustumNumberFeild extends StatelessWidget {
     return Container(
       width: 310,
       child: TextFormField(
+        validator: (text) {
+          if (text == null || text.trim().isEmpty) {
+            return 'Enter your phone number';
+          }
+          return null;
+        },
         decoration: InputDecoration(
             enabledBorder: OutlineInputBorder(
                 borderSide: BorderSide(color: Colors.grey, width: 1)),

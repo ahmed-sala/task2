@@ -1,87 +1,88 @@
-import 'package:first_google/bottom_button.dart';
-import 'package:first_google/number_feild.dart';
-import 'package:first_google/password_feild.dart';
-import 'package:first_google/text_feilds.dart';
+import 'package:first_google/keys.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 
-class MyHomePage extends StatefulWidget {
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
+class HomeScreen extends StatelessWidget {
+  final _items = [];
+  final GlobalKey<AnimatedListState> key = GlobalKey();
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        FocusScope.of(context).unfocus();
-      },
-      child: Scaffold(
-        // resizeToAvoidBottomInset: false,
-        body: SingleChildScrollView(
-          keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-          child: Column(
-            children: [
-              ClipPath(
-                clipper: WaveClipperTwo(
-                  flip: true,
-                  reverse: false,
-                ),
-                child: Container(
-                  height: MediaQuery.of(context).size.height * .3,
-                  color: Colors.purple,
-                  child: Center(
-                    child: Text(
-                      "Register",
-                      style: TextStyle(
-                          fontSize: 40,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Flutter Map'),
+        backgroundColor: Colors.grey,
+      ),
+      backgroundColor: CupertinoColors.darkBackgroundGray,
+      body: Column(
+        children: [
+          SizedBox(
+            height: 10,
+          ),
+          Container(
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20), color: Colors.white),
+            child: IconButton(
+              onPressed: addItem,
+              icon: Icon(CupertinoIcons.add),
+            ),
+          ),
+          Expanded(
+            child: AnimatedList(
+              key: RIKeys.riKey1,
+              initialItemCount: 0,
+              padding: EdgeInsets.all(10),
+              itemBuilder: (_, index, animation) {
+                return SizeTransition(
+                  sizeFactor: animation,
+                  key: UniqueKey(),
+                  child: Card(
+                    margin: EdgeInsets.all(10),
+                    color: Colors.orangeAccent,
+                    child: ListTile(
+                      title: Text(
+                        _items[index],
+                        style: TextStyle(fontSize: 24),
+                      ),
+                      trailing: IconButton(
+                        icon: Icon(Icons.delete),
+                        onPressed: () {
+                          removeItem(index);
+                        },
+                      ),
                     ),
                   ),
-                ),
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              CustumTextFeild(
-                  title: 'Full Name', icon: Icons.person, hint: 'Ahmed Salah'),
-              SizedBox(
-                height: 20,
-              ),
-              CustumTextFeild(
-                  title: 'Email',
-                  icon: Icons.mail_outline_outlined,
-                  hint: 'test@test.com'),
-              SizedBox(
-                height: 20,
-              ),
-              CustumPasswordFeild(title: 'Password'),
-              SizedBox(
-                height: 20,
-              ),
-              CustumPasswordFeild(title: 'Re-Enter Password'),
-              SizedBox(
-                height: 20,
-              ),
-              CustumNumberFeild(title: 'Phone Number'),
-              SizedBox(
-                height: 20,
-              ),
-              BottomButton(
-                  title: 'Register',
-                  color: Colors.purple,
-                  textCo: Colors.white),
-              SizedBox(
-                height: 15,
-              ),
-              BottomButton(
-                  title: 'Login', color: Colors.white, textCo: Colors.purple),
-            ],
-          ),
-        ),
+                );
+              },
+            ),
+          )
+        ],
       ),
     );
+  }
+
+  void addItem() {
+    _items.insert(0, 'Item ${_items.length + 2}');
+    RIKeys.riKey1.currentState!
+        .insertItem(0, duration: const Duration(seconds: 1));
+  }
+
+  void removeItem(int index) {
+    RIKeys.riKey1.currentState!.removeItem(index, (context, animation) {
+      return SizeTransition(
+        sizeFactor: animation,
+        child: Card(
+          margin: EdgeInsets.all(10),
+          color: Colors.red,
+          child: ListTile(
+            title: Text(
+              'Deleted',
+              style: TextStyle(fontSize: 24),
+            ),
+          ),
+        ),
+      );
+    }, duration: Duration(milliseconds: 600));
+    _items.removeAt(index);
+    // index++;
   }
 }

@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 
-class CustumTextFeild extends StatelessWidget {
+class EmailTextFeild extends StatelessWidget {
   final IconData icon;
   final String title;
   final String hint;
   var emailController = TextEditingController();
-  CustumTextFeild(
+  var formKey = GlobalKey<FormState>();
+
+  EmailTextFeild(
       {required this.title,
       required this.icon,
       required this.hint,
@@ -15,14 +17,17 @@ class CustumTextFeild extends StatelessWidget {
     return Container(
       width: 310,
       child: TextFormField(
-        controller: emailController,
-        keyboardType: TextInputType.name,
         validator: (text) {
           if (text == null || text.trim().isEmpty) {
-            return 'please enter your name';
+            return 'please enter email';
+          }
+          if (!ValidationUtils.isValidEmail(text)) {
+            return 'please enter valid email';
           }
           return null;
         },
+        controller: emailController,
+        keyboardType: TextInputType.emailAddress,
         decoration: InputDecoration(
           enabledBorder: OutlineInputBorder(
               borderSide: BorderSide(color: Colors.grey, width: 1)),
@@ -32,5 +37,13 @@ class CustumTextFeild extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+class ValidationUtils {
+  static bool isValidEmail(String email) {
+    return RegExp(
+            r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+        .hasMatch(email);
   }
 }
