@@ -12,6 +12,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme: ThemeData(
+        colorScheme: ThemeData().colorScheme.copyWith(
+              secondary: Colors.purple,
+            ),
+      ),
       title: 'Flutter Demo',
       home: RegisterSceen(),
     );

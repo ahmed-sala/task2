@@ -3,8 +3,12 @@ import 'package:flutter/material.dart';
 class CustumPasswordFeild extends StatefulWidget {
   final String title;
   var passwordController = TextEditingController();
+  var repasswordController = TextEditingController();
 
-  CustumPasswordFeild({required this.title, required this.passwordController});
+  CustumPasswordFeild(
+      {required this.title,
+      required this.passwordController,
+      required this.repasswordController});
 
   @override
   State<CustumPasswordFeild> createState() => _CustumPasswordFeildState();
@@ -27,6 +31,10 @@ class _CustumPasswordFeildState extends State<CustumPasswordFeild> {
         validator: (text) {
           if (text == null || text.trim().isEmpty) {
             return 'please enter password';
+          }
+          if (widget.repasswordController.text !=
+              widget.passwordController.text) {
+            return 'Enter the same password';
           }
           if (text.length < 7) {
             return 'please enter password more than 6 character';

@@ -3,16 +3,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatelessWidget {
-  final _items = [];
+  final items = [];
   final GlobalKey<AnimatedListState> key = GlobalKey();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Flutter Map'),
-        backgroundColor: Colors.grey,
+        backgroundColor: Colors.purple,
       ),
-      backgroundColor: CupertinoColors.darkBackgroundGray,
+      backgroundColor: Colors.white,
       body: Column(
         children: [
           SizedBox(
@@ -40,7 +40,7 @@ class HomeScreen extends StatelessWidget {
                     color: Colors.orangeAccent,
                     child: ListTile(
                       title: Text(
-                        _items[index],
+                        items[index],
                         style: TextStyle(fontSize: 24),
                       ),
                       trailing: IconButton(
@@ -61,7 +61,7 @@ class HomeScreen extends StatelessWidget {
   }
 
   void addItem() {
-    _items.insert(0, 'Item ${_items.length + 2}');
+    items.insert(0, 'Item ${items.length + 2}');
     RIKeys.riKey1.currentState!
         .insertItem(0, duration: const Duration(seconds: 1));
   }
@@ -82,7 +82,7 @@ class HomeScreen extends StatelessWidget {
         ),
       );
     }, duration: Duration(milliseconds: 600));
-    _items.removeAt(index);
+    items.removeAt(index);
     // index++;
   }
 }
